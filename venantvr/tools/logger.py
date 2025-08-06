@@ -3,7 +3,7 @@ import os
 import sys
 from logging.handlers import WatchedFileHandler
 
-from business.tools.stream import StreamToLogger
+from venantvr.tools.stream import StreamToLogger
 
 
 def setup_logging(log_level=logging.INFO):
