@@ -58,9 +58,8 @@ Ces modules fournissent des outils pour une configuration de logging robuste.
 
 ### Logging
 
-```
-from venantvr.tools import setup_logging, configure_stream, logger
-import sys
+```python
+from venantvr.tools import setup_logging, configure_stream
 
 # Configure le logger principal avec le niveau DEBUG
 main_logger = setup_logging(log_level=logging.DEBUG)
@@ -84,7 +83,7 @@ print("Ceci sera affiché dans le logger.")
 
 ### Mise en cache
 
-```
+```python
 from venantvr.tools import cache_to_pickle, cache_to_json, cache_for_n_calls
 import time
 
