@@ -1,3 +1,4 @@
+import functools
 import json
 import os
 import pickle
@@ -87,6 +88,37 @@ def dynamic_cache_to_pickle(template_dir, cache_filename=None):
                 pickle.dump({"value": result}, file)
 
             return result
+
+        return wrapper
+
+    return decorator
+
+
+def cache_for_n_calls(n):
+    """
+    Décorateur pour cacher le résultat d'une méthode pendant 'n' appels,
+    avec un mécanisme de désactivation externe.
+
+    :param n: Nombre d'appels pendant lequel le cache est actif.
+    """
+
+    def decorator(func):
+        cached_result = None  # Pour stocker le résultat de la méthode
+        call_count = 0  # Compteur d'appels
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            nonlocal call_count, cached_result
+
+            # Si le compteur est en dessous de 'n', retourner le résultat mis en cache
+            if call_count % n != 0:
+                call_count += 1
+                return cached_result
+
+            # Sinon, réinitialiser le compteur et recalculer le résultat
+            call_count = 1  # Réinitialisation après recalcul
+            cached_result = func(*args, **kwargs)
+            return cached_result
 
         return wrapper
 
