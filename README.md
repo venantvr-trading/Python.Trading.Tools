@@ -1,128 +1,306 @@
-# Python.Trading.Tools
+# Python Trading Tools
 
-## Description
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](.)
 
-`Python.Trading.Tools` est une bibliothèque utilitaire conçue pour simplifier les tâches de logging et de mise en cache dans les applications Python, particulièrement
-dans le contexte du trading où la performance et la journalisation sont essentielles.
+A Python utility library designed to simplify logging and caching tasks in Python applications, particularly in trading contexts where performance and comprehensive logging are essential.
 
-Cette bibliothèque fournit des décorateurs pour le cache et des fonctions pour une configuration de logging flexible.
+## Features
 
-## Installation
+- **Dynamic Caching**: Flexible caching decorators with JSON and Pickle support
+- **Advanced Logging**: Comprehensive logging setup with file and console handlers
+- **Stream Redirection**: Automatic stdout/stderr redirection to logging system
+- **Trading-Focused**: Optimized for financial and trading applications
+- **Zero Runtime Dependencies**: No external dependencies required for core functionality
 
-Cette bibliothèque est conçue pour être installée en tant que package Python.
+## Quick Start
 
-```
+### Installation
+
+```bash
+# Install from source
 pip install .
-```
 
-ou, si vous souhaitez l'installer en mode "editable" pour le développement :
-
-```
+# Development installation
 pip install -e .
+
+# Install with testing dependencies
+pip install -e ".[dev]"
 ```
 
-### Prérequis
-
-* Python \>= 3.8
-
-## Modules et fonctionnalités
-
-### `caching.py`
-
-Ce module fournit des décorateurs de fonction pour mettre en cache les résultats d'une méthode.
-
-* `@cache_to_pickle(path)`: Met en cache le résultat d'une fonction dans un fichier `.pickle`. La fonction ne sera exécutée qu'une seule fois. Lors des appels suivants,
-  le résultat sera chargé depuis le fichier.
-
-* `@cache_to_json(path)`: Met en cache le résultat d'une fonction dans un fichier `.json`. Similaire à `@cache_to_pickle`, mais le résultat est stocké au format JSON.
-
-* `@cache_for_n_calls(n)`: Met en cache le résultat d'une fonction pour `n` appels consécutifs. La fonction sera ré-exécutée au `n`-ième appel, et son nouveau résultat
-  sera mis en cache pour les `n` appels suivants.
-
-### `logger.py` et `stream.py`
-
-Ces modules fournissent des outils pour une configuration de logging robuste.
-
-* `setup_logging(log_level)`: Configure le logger principal de l'application, en définissant le niveau de log et en créant un `StreamHandler` pour afficher les logs dans
-  la console. Cette fonction redirige également `sys.stdout` et `sys.stderr` vers le logger, ce qui est très utile pour capturer toutes les sorties (y compris les
-  `print()`) dans les logs.
-
-* `configure_stream(runtime_logger, log_file)`: Ajoute un `WatchedFileHandler` au logger, permettant de sauvegarder les logs dans un fichier spécifié. Il s'assure que le
-  répertoire de destination existe.
-
-* `logger`: Une instance de logger pré-configurée par défaut.
-
-* `StreamToLogger`: Une classe utilitaire interne utilisée pour rediriger les flux de sortie standard vers le logger.
-
-## Utilisation
-
-### Logging
+### Basic Usage
 
 ```python
+from venantvr.tools import setup_logging, dynamic_cache_to_json
+import logging
+
+# Setup logging
+logger = setup_logging(log_level=logging.INFO)
+
+# Use caching decorator
+class TradingBot:
+    def __init__(self):
+        self.exchange_name = "binance"
+    
+    @dynamic_cache_to_json("cache/{exchange_name}/")
+    def get_market_data(self):
+        return {"price": 50000, "symbol": "BTC/USD"}
+
+bot = TradingBot()
+data = bot.get_market_data()  # Cached automatically
+```
+
+## Requirements
+
+- **Python**: >= 3.8
+- **Development Dependencies**: pytest, pytest-cov (optional)
+
+## Modules Overview
+
+### Caching Module (`caching.py`)
+
+Provides powerful decorators for method result caching:
+
+#### `@dynamic_cache_to_json(template_dir, cache_filename=None)`
+Caches function results in JSON format with dynamic path templating.
+
+```python
+class ExchangeAPI:
+    def __init__(self):
+        self.exchange_name = "coinbase"
+        self.api_version = "v1"
+    
+    @dynamic_cache_to_json("cache/{exchange_name}/{api_version}/")
+    def get_trading_pairs(self):
+        # This will be cached to: cache/coinbase/v1/get_trading_pairs.json
+        return {"pairs": ["BTC/USD", "ETH/USD"]}
+```
+
+**Features:**
+- Dynamic path templating using instance attributes
+- Automatic directory creation
+- Custom filename support
+- JSON serialization for readable cache files
+
+#### `@dynamic_cache_to_pickle(template_dir, cache_filename=None)`
+Similar to JSON caching but uses pickle for complex Python objects.
+
+```python
+@dynamic_cache_to_pickle("cache/{exchange_name}/")
+def get_complex_data(self):
+    return {"data": [1, 2, 3], "func": lambda x: x * 2}
+```
+
+#### `@cache_for_n_calls(n)`
+Caches results for a specific number of function calls.
+
+```python
+@cache_for_n_calls(5)
+def get_live_price(self):
+    # Fresh data every 5 calls
+    return requests.get("https://api.exchange.com/price").json()
+```
+
+### Logging Module (`logger.py`)
+
+Comprehensive logging setup with advanced features:
+
+#### `setup_logging(log_level=logging.INFO)`
+Configures the main application logger with console output and stdout/stderr redirection.
+
+```python
+import logging
+from venantvr.tools import setup_logging
+
+logger = setup_logging(log_level=logging.DEBUG)
+logger.info("Application started")
+
+# All print statements are automatically logged
+print("This will appear in logs")
+```
+
+#### `configure_stream(runtime_logger, log_file)`
+Adds file logging with automatic directory creation.
+
+```python
+from venantvr.tools import configure_stream
+
+configure_stream(logger, "logs/trading_app.log")
+logger.info("This goes to both console and file")
+```
+
+#### `get_formatter(runtime_logger, handler_type)`
+Utility function to retrieve formatters from specific handler types.
+
+### Stream Module (`stream.py`)
+
+#### `StreamToLogger`
+Internal utility class for redirecting stdout/stderr to logging system with recursion protection.
+
+## Advanced Usage Examples
+
+### Complete Trading Application
+
+```python
+import logging
+import time
+from venantvr.tools import (
+    setup_logging, 
+    configure_stream, 
+    dynamic_cache_to_json, 
+    cache_for_n_calls
+)
+
+class TradingBot:
+    def __init__(self, exchange_name):
+        self.exchange_name = exchange_name
+        self.logger = setup_logging(log_level=logging.INFO)
+        configure_stream(self.logger, f"logs/{exchange_name}.log")
+    
+    @dynamic_cache_to_json("cache/{exchange_name}/market_data/")
+    def get_historical_data(self, symbol, timeframe="1h"):
+        self.logger.info(f"Fetching historical data for {symbol}")
+        # Simulate API call
+        time.sleep(1)
+        return {
+            "symbol": symbol,
+            "timeframe": timeframe,
+            "data": [{"timestamp": time.time(), "price": 50000}]
+        }
+    
+    @cache_for_n_calls(10)
+    def get_account_balance(self):
+        self.logger.info("Fetching account balance")
+        return {"balance": 10000, "currency": "USD"}
+    
+    @dynamic_cache_to_json("cache/{exchange_name}/", cache_filename="config.json")
+    def get_trading_config(self):
+        return {
+            "max_position_size": 1000,
+            "risk_percentage": 0.02,
+            "stop_loss": 0.05
+        }
+
+# Usage
+bot = TradingBot("binance")
+historical = bot.get_historical_data("BTC/USD", "4h")
+balance = bot.get_account_balance()
+config = bot.get_trading_config()
+```
+
+### Error Handling and Logging
+
+```python
+import logging
 from venantvr.tools import setup_logging, configure_stream
 
-# Configure le logger principal avec le niveau DEBUG
-main_logger = setup_logging(log_level=logging.DEBUG)
-
-# Ajoute un handler pour écrire les logs dans un fichier
-configure_stream(main_logger, "logs/app.log")
-
-# Utilisation des logs
-main_logger.info("Démarrage de l'application...")
-main_logger.debug("Ceci est un message de débogage.")
-main_logger.error("Une erreur est survenue !")
-
-# Les appels à print sont aussi capturés
-print("Ceci sera affiché dans le logger.")
-
-# Pour un autre logger
-# from logging import getLogger
-# my_module_logger = getLogger("my_module")
-# my_module_logger.info("Un message de mon_module.")
+class RobustTradingSystem:
+    def __init__(self):
+        self.logger = setup_logging(log_level=logging.INFO)
+        configure_stream(self.logger, "logs/errors.log")
+    
+    def execute_trade(self, symbol, quantity):
+        try:
+            self.logger.info(f"Executing trade: {symbol} x {quantity}")
+            # Trading logic here
+            result = {"status": "success", "order_id": "12345"}
+            self.logger.info(f"Trade executed successfully: {result}")
+            return result
+            
+        except Exception as e:
+            self.logger.error(f"Trade execution failed: {str(e)}")
+            raise
 ```
 
-### Mise en cache
+## Testing
 
-```python
-from venantvr.tools import cache_to_pickle, cache_to_json, cache_for_n_calls
-import time
+The project includes comprehensive tests covering all functionality:
 
-# Exemple avec cache_to_pickle
-@cache_to_pickle('data_cache.pkl')
-def get_heavy_data_pickle():
-    print("Fetching data (pickle)...")
-    time.sleep(2)
-    return {"id": 1, "value": "heavy data"}
+```bash
+# Run tests with unittest
+python -m unittest discover tests -v
 
-# Le premier appel prendra 2 secondes, les suivants seront instantanés
-data = get_heavy_data_pickle()
-print(data)
-data = get_heavy_data_pickle()
-print(data)
+# Run tests with pytest (if installed)
+pytest
 
-# Exemple avec cache_to_json
-@cache_to_json('data_cache.json')
-def get_heavy_data_json():
-    print("Fetching data (json)...")
-    time.sleep(2)
-    return {"id": 2, "value": "another heavy data"}
-
-# Le premier appel prendra 2 secondes, les suivants seront instantanés
-data = get_heavy_data_json()
-print(data)
-data = get_heavy_data_json()
-print(data)
-
-# Exemple avec cache_for_n_calls
-@cache_for_n_calls(n=3)
-def get_market_price():
-    current_time = time.time()
-    print(f"Fetching fresh market price at {current_time}")
-    return {"price": current_time}
-
-# Le prix sera mis en cache pendant 3 appels
-for _ in range(5):
-    price_info = get_market_price()
-    print(price_info)
-    time.sleep(1)
+# Run tests with coverage
+pytest --cov=venantvr --cov-report=html
 ```
+
+### Test Coverage
+
+- **Caching Tests**: All decorator functionality, file operations, directory creation
+- **Logging Tests**: Logger setup, file handlers, stream redirection
+- **Integration Tests**: Combined logging and caching scenarios
+- **Error Handling**: Exception cases and edge conditions
+
+## Project Structure
+
+```
+Python.Trading.Tools/
+├── venantvr/
+│   └── tools/
+│       ├── __init__.py          # Package exports
+│       ├── caching.py           # Caching decorators
+│       ├── logger.py            # Logging configuration
+│       └── stream.py            # Stream redirection utilities
+├── tests/
+│   ├── __init__.py
+│   ├── test_caching.py          # Caching tests
+│   ├── test_logger.py           # Logging tests
+│   └── test_integration.py      # Integration tests
+├── pyproject.toml               # Modern Python packaging
+├── setup.py                     # Legacy setup support
+├── requirements.txt             # Dependencies
+└── README.md                    # This file
+```
+
+## Configuration
+
+### pytest Configuration
+
+The project is configured for easy testing with pytest:
+
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--verbose --cov=venantvr --cov-report=html --cov-report=term-missing"
+```
+
+### Development Dependencies
+
+Optional development dependencies can be installed with:
+
+```bash
+pip install -e ".[dev]"
+```
+
+This includes:
+- `pytest>=7.0.0`: Testing framework
+- `pytest-cov>=4.0.0`: Coverage reporting
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Contact
+
+- **Author**: venantvr
+- **Email**: venantvr@gmail.com
+- **Repository**: [https://github.com/venantvr/Python.Trading.Tools](https://github.com/venantvr/Python.Trading.Tools)
+
+---
+
+*Built with ❤️ for the Python trading community*
