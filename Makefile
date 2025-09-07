@@ -1,11 +1,11 @@
-# Python Trading Tools - Makefile
+# Python.Trading.Tools - Makefile
 # Author: venantvr
 
 .PHONY: help install install-dev test test-verbose coverage clean lint format build upload docs check-deps
 
 # Default target
 help:
-	@echo "Python Trading Tools - Available Commands:"
+	@echo "Python.Trading.Tools - Available Commands:"
 	@echo ""
 	@echo "Installation:"
 	@echo "  install      Install the package in production mode"
@@ -34,12 +34,15 @@ help:
 
 # Installation targets
 install:
-	@echo "Installing Python Trading Tools..."
+	@echo "Installing Python.Trading.Tools..."
+	pip install -r requirements.txt
 	pip install .
 
 install-dev:
-	@echo "Installing Python Trading Tools in development mode..."
+	@echo "Installing Python.Trading.Tools in development mode..."
+	pip install -r requirements-dev.txt
 	pip install -e ".[dev]"
+	pre-commit install
 	@echo "Development installation complete!"
 
 # Testing targets
@@ -104,13 +107,18 @@ clean:
 	rm -rf *.egg-info/
 	rm -rf htmlcov/
 	rm -rf .coverage
+	rm -rf .coverage.*
 	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	rm -rf .tox/
+	rm -rf coverage.xml
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 	find . -type f -name "*.pyo" -delete
 	find . -type f -name "*.orig" -delete
 	find . -type f -name "*.rej" -delete
 	find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+	find . -type d -name ".eggs" -exec rm -rf {} + 2>/dev/null || true
 	@echo "Cleanup complete!"
 
 docs:
@@ -125,10 +133,22 @@ dev-setup: install-dev
 dev-test: clean test coverage
 	@echo "Full development test cycle complete!"
 
+# Pre-commit hooks
+pre-commit:
+	@echo "Running pre-commit hooks..."
+	@command -v pre-commit >/dev/null 2>&1 || { echo "pre-commit not installed. Run 'make install-dev' first."; exit 1; }
+	pre-commit run --all-files
+
 # CI/CD pipeline simulation
-ci: install-dev test coverage lint
+ci: install-dev test coverage lint pre-commit
 	@echo "CI pipeline simulation complete!"
 
 # Quick quality check
 quick-check: test lint
 	@echo "Quick quality check complete!"
+
+# Type checking
+type-check:
+	@echo "Running type checking with mypy..."
+	@command -v mypy >/dev/null 2>&1 || { echo "mypy not installed. Run 'make install-dev' first."; exit 1; }
+	mypy venantvr/ --ignore-missing-imports
