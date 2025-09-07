@@ -43,12 +43,8 @@ MANIFEST
 # Testing
 .tox/
 .nox/
-.coverage
-.coverage.*
 .pytest_cache/
-htmlcov/
 nosetests.xml
-coverage.xml
 *.cover
 *.py,cover
 .hypothesis/

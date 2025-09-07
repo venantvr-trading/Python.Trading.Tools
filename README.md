@@ -54,7 +54,7 @@ data = bot.get_market_data()  # Cached automatically
 ## Requirements
 
 - **Python**: >= 3.8
-- **Development Dependencies**: pytest, pytest-cov (optional)
+- **Development Dependencies**: pytest (optional)
 
 ## Modules Overview
 
@@ -224,11 +224,11 @@ python -m unittest discover tests -v
 # Run tests with pytest (if installed)
 pytest
 
-# Run tests with coverage
-pytest --cov=venantvr --cov-report=html
+# Run tests with pytest
+pytest tests/ -v
 ```
 
-### Test Coverage
+### Test Suite
 
 - **Caching Tests**: All decorator functionality, file operations, directory creation
 - **Logging Tests**: Logger setup, file handlers, stream redirection
@@ -268,7 +268,7 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "--verbose --cov=venantvr --cov-report=html --cov-report=term-missing"
+addopts = "--verbose"
 ```
 
 ### Development Dependencies
@@ -281,7 +281,6 @@ pip install -e ".[dev]"
 
 This includes:
 - `pytest>=7.0.0`: Testing framework
-- `pytest-cov>=4.0.0`: Coverage reporting
 
 ## License
 
