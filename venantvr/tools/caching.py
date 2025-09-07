@@ -14,6 +14,7 @@ def dynamic_cache_to_json(template_dir, cache_filename=None):
     :param template_dir: Un chemin de répertoire de cache avec des placeholders (ex: 'cache/{exchange_name}/').
     :param cache_filename: (Optionnel) Nom du fichier de cache. Par défaut, c'est le nom de la fonction décorée avec l'extension .json.
     """
+
     def decorator(func):
         @wraps(func)
         def wrapper(self, *args, **kwargs):

@@ -4,7 +4,8 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](.)
 
-A Python utility library designed to simplify logging and caching tasks in Python applications, particularly in trading contexts where performance and comprehensive logging are essential.
+A Python utility library designed to simplify logging and caching tasks in Python applications, particularly in trading contexts where performance and comprehensive
+logging are essential.
 
 ## Features
 
@@ -63,6 +64,7 @@ data = bot.get_market_data()  # Cached automatically
 Provides powerful decorators for method result caching:
 
 #### `@dynamic_cache_to_json(template_dir, cache_filename=None)`
+
 Caches function results in JSON format with dynamic path templating.
 
 ```python
@@ -78,12 +80,14 @@ class ExchangeAPI:
 ```
 
 **Features:**
+
 - Dynamic path templating using instance attributes
 - Automatic directory creation
 - Custom filename support
 - JSON serialization for readable cache files
 
 #### `@dynamic_cache_to_pickle(template_dir, cache_filename=None)`
+
 Similar to JSON caching but uses pickle for complex Python objects.
 
 ```python
@@ -93,6 +97,7 @@ def get_complex_data(self):
 ```
 
 #### `@cache_for_n_calls(n)`
+
 Caches results for a specific number of function calls.
 
 ```python
@@ -107,6 +112,7 @@ def get_live_price(self):
 Comprehensive logging setup with advanced features:
 
 #### `setup_logging(log_level=logging.INFO)`
+
 Configures the main application logger with console output and stdout/stderr redirection.
 
 ```python
@@ -121,6 +127,7 @@ print("This will appear in logs")
 ```
 
 #### `configure_stream(runtime_logger, log_file)`
+
 Adds file logging with automatic directory creation.
 
 ```python
@@ -131,11 +138,13 @@ logger.info("This goes to both console and file")
 ```
 
 #### `get_formatter(runtime_logger, handler_type)`
+
 Utility function to retrieve formatters from specific handler types.
 
 ### Stream Module (`stream.py`)
 
 #### `StreamToLogger`
+
 Internal utility class for redirecting stdout/stderr to logging system with recursion protection.
 
 ## Advanced Usage Examples
@@ -280,6 +289,7 @@ pip install -e ".[dev]"
 ```
 
 This includes:
+
 - `pytest>=7.0.0`: Testing framework
 
 ## License
