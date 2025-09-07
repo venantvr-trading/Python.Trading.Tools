@@ -4,10 +4,10 @@ setup(
     name="Python.Trading.Tools",
     version="0.1.0",
     packages=find_packages(),
-    description="Une bibliothèque Python pour le logging.",
+    description="A Python library for trading tools.",
     author="venantvr",
     author_email="venantvr@gmail.com",
     url="https://github.com/venantvr/Python.Trading.Tools",
-    install_requires=[],  # Ajoutez vos dépendances ici si nécessaire
+    install_requires=[],  # Add your dependencies here if needed
     python_requires='>=3.8',
 )

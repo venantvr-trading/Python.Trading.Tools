@@ -1,13 +1,13 @@
 [build-system]
-# Ces lignes indiquent à pip d'utiliser setuptools pour construire votre paquet
+# These lines tell pip to use setuptools to build your package
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-# Métadonnées du projet (équivalent des arguments de setup() )
+# Project metadata (equivalent to setup() arguments)
 name = "Python.Trading.Tools"
 version = "0.1.0"
-description = "Une bibliothèque Python pour le logging."
+description = "A Python library for trading tools."
 requires-python = ">=3.8"
 dependencies = []  # No runtime dependencies
 authors = [
@@ -21,7 +21,6 @@ dev = [
     "wheel>=0.40.0",
     "build>=0.10.0",
     "pytest>=7.0.0",
-    "pytest-cov>=4.0.0",
     "flake8>=6.0.0",
     "black>=23.0.0",
     "isort>=5.12.0",
@@ -30,15 +29,15 @@ dev = [
     "pre-commit>=3.0.0",
     "twine>=4.0.0"
 ]
-test = ["pytest>=7.0.0", "pytest-cov>=4.0.0"]
+test = ["pytest>=7.0.0"]
 
 [tool.setuptools.packages.find]
-# Cette table est l'équivalent moderne de packages=find_packages()
-# Elle indique à setuptools de chercher automatiquement les paquets dans le répertoire
+# This table is the modern equivalent of packages=find_packages()
+# It tells setuptools to automatically find packages in the directory
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "--verbose --cov=venantvr --cov-report=html --cov-report=term-missing"
+addopts = "--verbose"
