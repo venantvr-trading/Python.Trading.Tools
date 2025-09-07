@@ -32,8 +32,8 @@ dev = [
 test = ["pytest>=7.0.0"]
 
 [tool.setuptools.packages.find]
-# This table is the modern equivalent of packages=find_packages()
-# It tells setuptools to automatically find packages in the directory
+where = ["."]
+include = ["venantvr*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
