@@ -6,7 +6,8 @@ import unittest
 from logging.handlers import WatchedFileHandler
 from unittest.mock import MagicMock
 
-from venantvr.tools.logger import setup_logging, get_formatter, configure_stream
+from venantvr.tools.logger import (configure_stream, get_formatter,
+                                   setup_logging)
 from venantvr.tools.stream import StreamToLogger
 
 
@@ -18,6 +19,7 @@ class TestLogger(unittest.TestCase):
     def tearDown(self):
         # Clean up temporary files and reset logging
         import shutil
+
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
         # Reset logging configuration
@@ -33,7 +35,9 @@ class TestLogger(unittest.TestCase):
         self.assertTrue(len(logger.handlers) > 0)
 
         # Check that a StreamHandler was added
-        stream_handlers = [h for h in logger.handlers if isinstance(h, logging.StreamHandler)]
+        stream_handlers = [
+            h for h in logger.handlers if isinstance(h, logging.StreamHandler)
+        ]
         self.assertTrue(len(stream_handlers) > 0)
 
     def test_setup_logging_stdout_stderr_redirection(self):
@@ -80,7 +84,9 @@ class TestLogger(unittest.TestCase):
         configure_stream(logger, log_file)
 
         # Check that WatchedFileHandler was added
-        watched_handlers = [h for h in logger.handlers if isinstance(h, WatchedFileHandler)]
+        watched_handlers = [
+            h for h in logger.handlers if isinstance(h, WatchedFileHandler)
+        ]
         self.assertTrue(len(watched_handlers) > 0)
 
         # Check that log directory was created
@@ -92,7 +98,7 @@ class TestLogger(unittest.TestCase):
         # Check that log file was created and has content
         self.assertTrue(os.path.exists(log_file))
 
-        with open(log_file, 'r') as f:
+        with open(log_file, "r") as f:
             content = f.read()
             self.assertIn("Test message", content)
 
@@ -120,7 +126,7 @@ class TestLogger(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             configure_stream(logger, "")
 
-        self.assertIn("Le chemin du fichier de log ne peut pas être vide", str(context.exception))
+        self.assertIn("Log file path cannot be empty", str(context.exception))
 
     def test_configure_stream_removes_duplicate_handlers(self):
         """Test that configure_stream removes duplicate WatchedFileHandler"""
@@ -129,10 +135,14 @@ class TestLogger(unittest.TestCase):
 
         # Configure file logging twice
         configure_stream(logger, log_file)
-        initial_handler_count = len([h for h in logger.handlers if isinstance(h, WatchedFileHandler)])
+        initial_handler_count = len(
+            [h for h in logger.handlers if isinstance(h, WatchedFileHandler)]
+        )
 
         configure_stream(logger, log_file)
-        final_handler_count = len([h for h in logger.handlers if isinstance(h, WatchedFileHandler)])
+        final_handler_count = len(
+            [h for h in logger.handlers if isinstance(h, WatchedFileHandler)]
+        )
 
         # Should still have only one WatchedFileHandler
         self.assertEqual(initial_handler_count, 1)
@@ -186,5 +196,5 @@ class TestStreamToLogger(unittest.TestCase):
         mock_logger.log.assert_not_called()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

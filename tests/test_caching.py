@@ -3,7 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from venantvr.tools.caching import dynamic_cache_to_json, dynamic_cache_to_pickle, cache_for_n_calls
+from venantvr.tools.caching import (cache_for_n_calls, dynamic_cache_to_json,
+                                    dynamic_cache_to_pickle)
 
 
 # noinspection PyUnusedLocal
@@ -15,6 +16,7 @@ class TestCaching(unittest.TestCase):
     def tearDown(self):
         # Clean up temporary files
         import shutil
+
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
     def test_dynamic_cache_to_json_basic_functionality(self):
@@ -43,7 +45,7 @@ class TestCaching(unittest.TestCase):
         self.assertEqual(result2, {"price": 100, "symbol": "BTC"})
 
         # Verify cache file content
-        with open(cache_path, 'r') as f:
+        with open(cache_path, "r") as f:
             cached_data = json.load(f)
             self.assertEqual(cached_data["value"], {"price": 100, "symbol": "BTC"})
 
@@ -54,7 +56,9 @@ class TestCaching(unittest.TestCase):
             def __init__(self):
                 self.exchange_name = "coinbase"
 
-            @dynamic_cache_to_json(f"{self.temp_dir}/{{exchange_name}}/", cache_filename="custom_data.json")
+            @dynamic_cache_to_json(
+                f"{self.temp_dir}/{{exchange_name}}/", cache_filename="custom_data.json"
+            )
             def get_custom_data(self):
                 return {"value": "custom"}
 
@@ -65,7 +69,7 @@ class TestCaching(unittest.TestCase):
         cache_path = Path(self.temp_dir) / "coinbase" / "custom_data.json"
         self.assertTrue(cache_path.exists())
 
-        with open(cache_path, 'r') as f:
+        with open(cache_path, "r") as f:
             cached_data = json.load(f)
             self.assertEqual(cached_data["value"], {"value": "custom"})
 
@@ -137,7 +141,9 @@ class TestCaching(unittest.TestCase):
                 self.exchange_name = "test_exchange"
                 self.market_type = "spot"
 
-            @dynamic_cache_to_json(f"{self.temp_dir}/{{exchange_name}}/{{market_type}}/")
+            @dynamic_cache_to_json(
+                f"{self.temp_dir}/{{exchange_name}}/{{market_type}}/"
+            )
             def get_nested_data(self):
                 return {"status": "ok"}
 
@@ -153,5 +159,5 @@ class TestCaching(unittest.TestCase):
         self.assertTrue(cache_file.exists())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
