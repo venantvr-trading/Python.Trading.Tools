@@ -26,8 +26,11 @@ pip install .
 # Development installation
 pip install -e .
 
-# Install with testing dependencies
+# Install with all development dependencies
 pip install -e ".[dev]"
+
+# Using Makefile (recommended for development)
+make install  # Installs both requirements.txt and requirements-dev.txt
 ```
 
 ### Basic Usage
@@ -227,14 +230,14 @@ class RobustTradingSystem:
 The project includes comprehensive tests covering all functionality:
 
 ```bash
-# Run tests with unittest
-python -m unittest discover tests -v
-
-# Run tests with pytest (if installed)
-pytest
-
 # Run tests with pytest
 pytest tests/ -v
+
+# Run tests with short traceback
+pytest tests/ -v --tb=short
+
+# Using Makefile (recommended)
+make test
 ```
 
 ### Test Suite
@@ -265,6 +268,20 @@ Python.Trading.Tools/
 └── README.md                    # This file
 ```
 
+## Makefile Commands
+
+The project includes a Makefile with useful development commands:
+
+```bash
+make help      # Show available commands
+make test      # Run tests with pytest
+make format    # Format code with black and isort
+make check     # Run format and tests
+make install   # Install all dependencies
+make update    # Update all dependencies
+make clean     # Clean up generated files
+```
+
 ## Configuration
 
 ### pytest Configuration
@@ -286,11 +303,25 @@ Optional development dependencies can be installed with:
 
 ```bash
 pip install -e ".[dev]"
+
+# Or using requirements-dev.txt
+pip install -r requirements-dev.txt
+
+# Using Makefile
+make install
 ```
 
 This includes:
 
 - `pytest>=7.0.0`: Testing framework
+- `black>=23.0.0`: Code formatter
+- `isort>=5.12.0`: Import sorter
+- `mypy>=1.0.0`: Static type checker
+- `flake8>=6.0.0`: Linting tool
+- `pre-commit>=3.0.0`: Pre-commit hooks
+- `safety>=2.3.0`: Security checker
+- `sphinx>=6.0.0`: Documentation generator (optional)
+- `twine>=4.0.0`: Publishing tool
 
 ## License
 
