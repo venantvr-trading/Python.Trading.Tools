@@ -35,6 +35,7 @@ class TestIntegration(unittest.TestCase):
 
         # Create a class that uses both logging and caching
         class TradingBot:
+
             def __init__(self):
                 self.exchange_name = "test_exchange"
                 self.logger = logging.getLogger("runtime")
@@ -83,6 +84,7 @@ class TestIntegration(unittest.TestCase):
         configure_stream(logger, log_file)
 
         class ErrorProneClass:
+
             def __init__(self):
                 self.exchange_name = "error_exchange"
                 self.logger = logging.getLogger("runtime")
@@ -108,6 +110,7 @@ class TestIntegration(unittest.TestCase):
         """Test multiple instances with different cache paths"""
 
         class ExchangeConnector:
+
             def __init__(self, exchange_name):
                 self.exchange_name = exchange_name
                 self.api_version = "v1"

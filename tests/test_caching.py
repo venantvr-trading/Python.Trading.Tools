@@ -23,6 +23,7 @@ class TestCaching(unittest.TestCase):
         """Test basic JSON caching functionality"""
 
         class MockClass:
+
             def __init__(self):
                 self.exchange_name = "binance"
 
@@ -53,6 +54,7 @@ class TestCaching(unittest.TestCase):
         """Test JSON caching with custom filename"""
 
         class MockClass:
+
             def __init__(self):
                 self.exchange_name = "coinbase"
 
@@ -77,6 +79,7 @@ class TestCaching(unittest.TestCase):
         """Test basic pickle caching functionality"""
 
         class MockClass:
+
             def __init__(self):
                 self.exchange_name = "kraken"
 
@@ -137,6 +140,7 @@ class TestCaching(unittest.TestCase):
         """Test that cache directories are created automatically"""
 
         class MockClass:
+
             def __init__(self):
                 self.exchange_name = "test_exchange"
                 self.market_type = "spot"
