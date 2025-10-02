@@ -6,9 +6,9 @@ import unittest
 from logging.handlers import WatchedFileHandler
 from unittest.mock import MagicMock
 
-from venantvr.tools.logger import (configure_stream, get_formatter,
-                                   setup_logging)
-from venantvr.tools.stream import StreamToLogger
+from python_trading_tools.logger import (configure_stream, get_formatter,
+                                          setup_logging)
+from python_trading_tools.stream import StreamToLogger
 
 
 class TestLogger(unittest.TestCase):

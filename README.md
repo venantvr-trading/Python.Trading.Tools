@@ -36,7 +36,7 @@ make install  # Installs both requirements.txt and requirements-dev.txt
 ### Basic Usage
 
 ```python
-from venantvr.tools import setup_logging, dynamic_cache_to_json
+from python_trading_tools import setup_logging, dynamic_cache_to_json
 import logging
 
 # Setup logging
@@ -120,7 +120,7 @@ Configures the main application logger with console output and stdout/stderr red
 
 ```python
 import logging
-from venantvr.tools import setup_logging
+from python_trading_tools import setup_logging
 
 logger = setup_logging(log_level=logging.DEBUG)
 logger.info("Application started")
@@ -134,7 +134,7 @@ print("This will appear in logs")
 Adds file logging with automatic directory creation.
 
 ```python
-from venantvr.tools import configure_stream
+from python_trading_tools import configure_stream
 
 configure_stream(logger, "logs/trading_app.log")
 logger.info("This goes to both console and file")
@@ -157,10 +157,10 @@ Internal utility class for redirecting stdout/stderr to logging system with recu
 ```python
 import logging
 import time
-from venantvr.tools import (
-    setup_logging, 
-    configure_stream, 
-    dynamic_cache_to_json, 
+from python_trading_tools import (
+    setup_logging,
+    configure_stream,
+    dynamic_cache_to_json,
     cache_for_n_calls
 )
 
@@ -205,7 +205,7 @@ config = bot.get_trading_config()
 
 ```python
 import logging
-from venantvr.tools import setup_logging, configure_stream
+from python_trading_tools import setup_logging, configure_stream
 
 class RobustTradingSystem:
     def __init__(self):
@@ -251,12 +251,11 @@ make test
 
 ```
 Python.Trading.Tools/
-├── venantvr/
-│   └── tools/
-│       ├── __init__.py          # Package exports
-│       ├── caching.py           # Caching decorators
-│       ├── logger.py            # Logging configuration
-│       └── stream.py            # Stream redirection utilities
+├── python_trading_tools/
+│   ├── __init__.py          # Package exports
+│   ├── caching.py           # Caching decorators
+│   ├── logger.py            # Logging configuration
+│   └── stream.py            # Stream redirection utilities
 ├── tests/
 │   ├── __init__.py
 │   ├── test_caching.py          # Caching tests

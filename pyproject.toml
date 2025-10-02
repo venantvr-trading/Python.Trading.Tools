@@ -1,19 +1,22 @@
 [build-system]
-# These lines tell pip to use setuptools to build your package
-requires = ["setuptools>=61.0", "wheel"]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
-# Project metadata (equivalent to setup() arguments)
-name = "Python.Trading.Tools"
+name = "python_trading_tools"
 version = "0.1.0"
 description = "A Python library for trading tools."
 requires-python = ">=3.8"
-dependencies = []  # No runtime dependencies
+dependencies = []
 authors = [
     { name = "venantvr", email = "venantvr@gmail.com" },
 ]
-urls = { Homepage = "https://github.com/venantvr/Python.Trading.Tools" }
+
+[project.urls]
+Homepage = "https://github.com/venantvr/Python.Trading.Tools"
 
 [project.optional-dependencies]
 dev = [
@@ -29,17 +32,31 @@ dev = [
     "pre-commit>=3.0.0",
     "sphinx>=6.0.0",
     "sphinx-rtd-theme>=1.2.0",
-    "twine>=4.0.0"
+    "twine>=4.0.0",
 ]
-test = ["pytest>=7.0.0"]
+test = [
+    "pytest>=7.0.0",
+]
 
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["venantvr*"]
+where = [
+    "src",
+]
+include = [
+    "python_trading_tools*",
+]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
+testpaths = [
+    "tests",
+]
+python_files = [
+    "test_*.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
 addopts = "--verbose"

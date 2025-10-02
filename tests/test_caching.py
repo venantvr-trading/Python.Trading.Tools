@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from venantvr.tools.caching import (cache_for_n_calls, dynamic_cache_to_json,
-                                    dynamic_cache_to_pickle)
+from python_trading_tools.caching import (cache_for_n_calls, dynamic_cache_to_json,
+                                           dynamic_cache_to_pickle)
 
 
 # noinspection PyUnusedLocal

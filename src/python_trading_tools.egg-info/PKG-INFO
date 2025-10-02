@@ -1,5 +1,5 @@
 Metadata-Version: 2.4
-Name: Python.Trading.Tools
+Name: python_trading_tools
 Version: 0.1.0
 Summary: A Python library for trading tools.
 Author-email: venantvr <venantvr@gmail.com>
@@ -17,6 +17,8 @@ Requires-Dist: isort>=5.12.0; extra == "dev"
 Requires-Dist: mypy>=1.0.0; extra == "dev"
 Requires-Dist: safety>=2.3.0; extra == "dev"
 Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Requires-Dist: sphinx>=6.0.0; extra == "dev"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "dev"
 Requires-Dist: twine>=4.0.0; extra == "dev"
 Provides-Extra: test
 Requires-Dist: pytest>=7.0.0; extra == "test"

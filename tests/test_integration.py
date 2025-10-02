@@ -6,8 +6,8 @@ import time
 import unittest
 from pathlib import Path
 
-from venantvr.tools import (cache_for_n_calls, configure_stream,
-                            dynamic_cache_to_json, setup_logging)
+from python_trading_tools import (cache_for_n_calls, configure_stream,
+                                   dynamic_cache_to_json, setup_logging)
 
 
 class TestIntegration(unittest.TestCase):
