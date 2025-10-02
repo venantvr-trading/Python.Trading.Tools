@@ -1,2 +1,0 @@
-# Python.Trading.Tools - Production Dependencies
-# No runtime dependencies required - this is a zero-dependency library

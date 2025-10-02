@@ -27,12 +27,14 @@ dev = [
     "mypy>=1.0.0",
     "safety>=2.3.0",
     "pre-commit>=3.0.0",
+    "sphinx>=6.0.0",
+    "sphinx-rtd-theme>=1.2.0",
     "twine>=4.0.0"
 ]
 test = ["pytest>=7.0.0"]
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["venantvr*"]
 
 [tool.pytest.ini_options]
