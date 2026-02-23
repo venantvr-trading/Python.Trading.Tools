@@ -343,3 +343,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 *Built with ❤️ for the Python trading community*
+
+## Stack
+
+[![Stack](https://skillicons.dev/icons?i=py,git&theme=dark)](https://skillicons.dev)
