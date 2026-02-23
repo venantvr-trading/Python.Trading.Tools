@@ -346,4 +346,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Stack
 
-[![Stack](https://skillicons.dev/icons?i=py,git&theme=dark)](https://skillicons.dev)
+[![Stack](https://skillicons.dev/icons?i=py&theme=dark)](https://skillicons.dev)
